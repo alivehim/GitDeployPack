@@ -106,7 +106,7 @@ namespace GitDeployPack.Core
                                FilePackService.PackScripts();
                                Logger.Information("Compile Completed......");
                                if(CompressService.Compress())
-                                    Logger.Information("over .....");
+                                    Logger.Information("Down .....");
                            }
                        );
 
