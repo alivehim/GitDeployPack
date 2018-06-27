@@ -85,6 +85,28 @@ namespace GitDeployPack.Core.FilePack
 
         private bool PackAssemblyFiles(ProjectDescription description, DirectoryInfo root)
         {
+            foreach(var item in description.HtmlFiles)
+            {
+                Directory.SetCurrentDirectory(description.Location.FullName);
+                var assemblySourceFile = item;
+                //reflative of path
+                var relativePath = assemblySourceFile.Replace(options.GitWorkPath, "");
+                //create sub folds
+
+                if (relativePath[0] == '\\')
+                {
+                    relativePath = relativePath.Remove(0, 1);
+                }
+
+                if (EnsureParentDirectory(root, relativePath))
+                {
+                    var copyFilePath = Path.Combine(root.FullName, relativePath);
+                    if (!File.Exists(copyFilePath) && File.Exists(assemblySourceFile))
+                        File.Copy(assemblySourceFile, copyFilePath);
+                }
+            }
+
+
             if (description.IsNeedCompile)
             {
                 logger.AppendLog(PackPeriod.Pack, $"{description.AssemblyName}");

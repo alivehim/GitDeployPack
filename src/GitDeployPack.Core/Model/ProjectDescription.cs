@@ -90,6 +90,8 @@ namespace GitDeployPack.Model
         /// </summary>
         public IList<string> StaticFiles { get; set; } = new List<string>();
 
+        public IList<string> HtmlFiles { get; set; } = new List<string>();
+
 
         public override string ToString()
         {

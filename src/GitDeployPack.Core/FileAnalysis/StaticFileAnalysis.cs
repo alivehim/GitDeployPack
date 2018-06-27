@@ -34,7 +34,10 @@ namespace GitDeployPack.Core.FileAnalysis
             {
                 var description = PackContext.ProjectsDescription.Where(p => p.ContentFiles.Any(x => filePath.EndsWith(x))).First();
                 logger.DebugTrace(filePath + "已存在项目中");
-                description.StaticFiles.Add(filePath);
+                if (!filePath.EndsWith(".cshtml"))
+                    description.StaticFiles.Add(filePath);
+                else
+                    description.HtmlFiles.Add(filePath);
                 return true;
             }
 
@@ -64,7 +67,10 @@ namespace GitDeployPack.Core.FileAnalysis
                                      && p.Location.FullName == item.Directory.FullName)) != null)
                                 {
                                     //add file to the collection of statics files
-                                    projDescription.StaticFiles.Add(filePath);
+                                    if (!filePath.EndsWith(".cshtml"))
+                                        projDescription.StaticFiles.Add(filePath);
+                                    else
+                                        projDescription.HtmlFiles.Add(filePath);
                                     return true;
                                 }
                                 else
@@ -82,7 +88,10 @@ namespace GitDeployPack.Core.FileAnalysis
                                     description.IsNeedCompile = true;
 
                                     //add file to the collection of statics files
-                                    description.StaticFiles.Add(filePath);
+                                    if (!filePath.EndsWith(".cshtml"))
+                                        description.StaticFiles.Add(filePath);
+                                    else
+                                        description.HtmlFiles.Add(filePath);
 
                                     PackContext.ProjectsDescription.Add(description);
                                     return true;

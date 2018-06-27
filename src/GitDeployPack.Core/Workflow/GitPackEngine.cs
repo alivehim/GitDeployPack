@@ -88,7 +88,6 @@ namespace GitDeployPack.Core
                     var compileSubscription = projects.ToObservable();
                     PathService.ClearTemperary();
 
-                    var moveFileSubscription = compileSubscription.Publish();
                     IDisposable subscription = compileSubscription
                         .ObserveOn(ThreadPoolScheduler.Instance)
                         .Subscribe(
@@ -112,24 +111,6 @@ namespace GitDeployPack.Core
                        );
 
                     composite.Add(subscription);
-                    //Logger.Information("aaaaaaaaaa...");
-                    //var packSubscription = moveFileSubscription.RefCount()
-                    //    .TakeUntil(compileSubscription)
-                    //    .ObserveOn(ThreadPoolScheduler.Instance).
-                    //   Subscribe(m =>
-                    //   {
-                    //       FilePackService.Pack(m);
-                    //       Logger.Information(m.ToString());
-                    //   },
-                    //      ex => Logger.Error("fatal error", ex),
-                    //      () => Logger.Information("Pack Completed....."));
-
-                    //composite.Add(packSubscription);
-
-                    moveFileSubscription.Connect();
-
-
-
                     return composite;
                 }
                 else
