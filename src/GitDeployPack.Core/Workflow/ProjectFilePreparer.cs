@@ -110,11 +110,6 @@ namespace GitDeployPack.Core
                        .GetEnumName<AnalysisFileType>());
                     fileAnalysis.Do(realFilePath);
                 }
-                else
-                {
-                    Console.WriteLine(realFilePath);
-                }
-          
             }
             catch(Exception ex)
             {
