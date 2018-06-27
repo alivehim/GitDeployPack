@@ -10,5 +10,7 @@ namespace GitDeployPack.Core
     public interface IFilePackService
     {
         bool Pack(ProjectDescription description);
+
+        bool PackScripts();
     }
 }

@@ -17,6 +17,7 @@ namespace GitDeployPack.Core
         public PackSetting PackSetting => packSetting;
         private DirectoryInfo tempLocation;
         private DirectoryInfo packLocation;
+        private DirectoryInfo scriptLocation;
         public DirectoryInfo StaticLocation
         {
             get
@@ -30,6 +31,14 @@ namespace GitDeployPack.Core
             get
             {
                 return TemporaryLocation.CreateSubdirectory(PackSetting.AssemblyDirectory);
+            }
+        }
+
+        public DirectoryInfo ScriptLocation
+        {
+            get
+            {
+                return TemporaryLocation.CreateSubdirectory("Script");
             }
         }
 
@@ -56,7 +65,7 @@ namespace GitDeployPack.Core
         {
             get
             {
-                if(packLocation==null)
+                if (packLocation == null)
                 {
                     var packDirectory = $"{System.AppDomain.CurrentDomain.BaseDirectory}\\{PUBLICDIRECTORY}";
                     packLocation = new DirectoryInfo(packDirectory);
@@ -72,7 +81,7 @@ namespace GitDeployPack.Core
         }
 
         public string GitRootDirectory { get; set; }
-
+       
         public PathService(
            PackSetting packSetting
            )
@@ -101,4 +110,4 @@ namespace GitDeployPack.Core
             return $"{System.AppDomain.CurrentDomain.BaseDirectory}\\nuget.exe";
         }
     }
-} 
+}

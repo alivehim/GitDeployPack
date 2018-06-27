@@ -28,7 +28,9 @@ namespace GitDeployPack.Model
         [Description("xml")]
         XML,
         [Description("config")]
-        CONFIG
+        CONFIG,
+        [Description("sql")]
+        SQL
        
     }
 }

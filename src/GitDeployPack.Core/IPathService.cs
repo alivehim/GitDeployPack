@@ -19,6 +19,8 @@ namespace GitDeployPack.Core
         DirectoryInfo AssemblyLocation { get; }
         DirectoryInfo TemporaryLocation { get; }
 
+        DirectoryInfo ScriptLocation { get; }
+
         DirectoryInfo PackLocation { get; }
 
         string GitRootDirectory { get; set; }

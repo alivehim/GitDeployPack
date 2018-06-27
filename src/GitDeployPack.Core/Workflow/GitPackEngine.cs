@@ -94,16 +94,17 @@ namespace GitDeployPack.Core
                         .Subscribe(
                            m =>
                            {
-                               if (!ProjectCompiler.Compile(m))
-                               {
-                                   composite.Dispose();
-                               }
+                               //if (!ProjectCompiler.Compile(m))
+                               //{
+                               //    composite.Dispose();
+                               //}
 
-                               FilePackService.Pack(m);
+                               //FilePackService.Pack(m);
                            },
                            ex => Logger.Error("fatal error", ex),
                            () =>
                            {
+                               FilePackService.PackScripts();
                                Logger.Information("Compile Completed......");
                                if(CompressService.Compress())
                                     Logger.Information("over .....");

@@ -22,6 +22,7 @@ namespace GitDeployPack.Core
         private ISolutionFinder solutionFinder;
         private INugetPackageManager nugetPackageManager;
         private IPathService pathService;
+        private PackSetting packSetting;
 
         public Options Options => options;
         public GitFilePackContext PackContext => packContext;
@@ -33,6 +34,7 @@ namespace GitDeployPack.Core
         public ISolutionFinder SolutionFinder => solutionFinder;
         public IPathService PathService => pathService;
         public INugetPackageManager NugetPackageManager => nugetPackageManager;
+        public PackSetting PackSetting => packSetting;
 
         public ProjectFilePreparer(
             Options options, 
@@ -43,6 +45,7 @@ namespace GitDeployPack.Core
             ISolutionFinder solutionFinder,
             INugetPackageManager nugetPackageManager,
             IPathService pathService,
+            PackSetting packSetting,
             IProjectParserServiceFactory projectParserFactory
             )
         {
@@ -55,6 +58,7 @@ namespace GitDeployPack.Core
             this.nugetPackageManager = nugetPackageManager;
             this.solutionFinder = solutionFinder;
             this.pathService = pathService;
+            this.packSetting = packSetting;
         }
 
         public IList<ProjectDescription> Analysis(ChangedFileList list)
@@ -68,7 +72,7 @@ namespace GitDeployPack.Core
                 if (!projectFiler.IsValid(item))
                     continue;
 
-                var filePath = $"{PathService.GitRootDirectory}\\{item.Replace("/","\\")}";
+                var filePath = $"{PathService.GitRootDirectory}\\{item}";
                 FileInfo file = new FileInfo(filePath);
 
                 if (!file.FullName.StartsWith(options.GitWorkPath))
@@ -99,14 +103,18 @@ namespace GitDeployPack.Core
         {
             try
             {
-                FileInfo file = new FileInfo($"{PathService.GitRootDirectory}\\{filePath}");
-                if (file.FullName.StartsWith(Options.GitWorkPath) &&  file.Exists)
+                var realFilePath=$"{PathService.GitRootDirectory}\\{filePath}";
+                if ((realFilePath.StartsWith(Options.GitWorkPath) || realFilePath.StartsWith($"{PathService.GitRootDirectory}\\{PackSetting.ExtentPath}")) &&  File.Exists(realFilePath))
                 {
-                    var fileAnalysis = FileAnalysisFactory.GetFileAnalysis(file.Extension.Replace(".", "")
+                    var fileAnalysis = FileAnalysisFactory.GetFileAnalysis(Path.GetExtension(realFilePath).Replace(".","")
                        .GetEnumName<AnalysisFileType>());
-                    fileAnalysis.Do(file.FullName);
+                    fileAnalysis.Do(realFilePath);
                 }
-               
+                else
+                {
+                    Console.WriteLine(realFilePath);
+                }
+          
             }
             catch(Exception ex)
             {

@@ -35,6 +35,9 @@ namespace GitDeployPack.Core
                 case AnalysisFileType.XML:
                     fileAnalysis = new StaticFileAnalysis(ContainerManager.Resolve<IProjectFilter>(), PackContext);
                     break;
+                case AnalysisFileType.SQL:
+                    fileAnalysis = new ScriptFileAnalysis(PackContext);
+                    break; 
                 default:
                     //throw new NotImplementedException();                    fileAnalysis = new UnkownFileAnalysis();
                     break;

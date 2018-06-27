@@ -17,6 +17,8 @@ namespace GitDeployPack.Setting
         public string IgnoreProjects { get; set; }
 
         public string IgnorePath { get;set; }
+
+        public string ExtentPath { get; set; }
         
         public string PackNamePattern { get; set; }
     }

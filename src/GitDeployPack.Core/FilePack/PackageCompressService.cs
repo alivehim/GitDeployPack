@@ -37,7 +37,11 @@ namespace GitDeployPack.Core.FilePack
 
         private bool Zip(string zipFilePath)
         {
-            var locations = new string[] { _pathService.StaticLocation.FullName, _pathService.AssemblyLocation.FullName };
+            var locations = new string[] {
+                _pathService.StaticLocation.FullName,
+                _pathService.AssemblyLocation.FullName,
+                _pathService.ScriptLocation.FullName
+            };
             FileInfo file = new FileInfo(zipFilePath);
             if (!file.Exists)
             {

@@ -38,7 +38,7 @@ namespace GitDeployPack.Core
             {
                 sLine = objReader.ReadLine();
                 if (sLine != null && !sLine.Equals(""))
-                    LineList.Add(sLine);
+                    LineList.Add(sLine.Replace("/","\\"));
             }
             objReader.Close();
             return LineList;
@@ -85,7 +85,7 @@ namespace GitDeployPack.Core
             var mc = Regex.Match(content,@"^(?<key>.*?)\s");
             if(mc.Success)
             {
-                return mc.Groups["key"].Value;
+                return mc.Groups["key"].Value.Replace("/","\\");
             }
             throw new Exception("Can not found work space");
         }
