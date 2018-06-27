@@ -23,7 +23,7 @@ namespace GitDeployPack.Core.MSBuild
             var logger = ContainerManager.Resolve<ILogger>();
             logger.AppendLog(PackPeriod.Compilie,$"{description}");
             var packSetting= ContainerManager.Resolve<PackSetting>();
-            var result=DosCommandOutput.Execute($"msbuild.exe {description.FullName} /nologo /verbosity:minimal /consoleloggerparameters:ErrorsOnly /t:Clean,Build,Restore /p:configuration=Release ", packSetting.MsbuildPath);
+            var result=DosCommandOutput.Execute($"msbuild.exe \"{description.FullName}\" /nologo /verbosity:minimal /consoleloggerparameters:ErrorsOnly /t:Clean,Build,Restore /p:configuration=Release ", packSetting.MsbuildPath);
             Console.WriteLine(result);
             return new BuildSolutionResult() { IsSuccess = true };
         }
