@@ -13,5 +13,7 @@ namespace GitDeployPack.Core
         IList<string> CompareFile(string orginBranch, string newBranch, string workspace, string file);
 
         string GetCurrentBranch(string workspace);
+
+        string GetGitWorkSpace(string codeDirectory);
     }
 }

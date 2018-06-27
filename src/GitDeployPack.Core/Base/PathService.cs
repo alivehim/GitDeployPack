@@ -71,6 +71,8 @@ namespace GitDeployPack.Core
             }
         }
 
+        public string GitRootDirectory { get; set; }
+
         public PathService(
            PackSetting packSetting
            )

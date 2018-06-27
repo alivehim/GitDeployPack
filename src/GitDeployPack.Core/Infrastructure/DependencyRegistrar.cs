@@ -26,7 +26,7 @@ namespace GitDeployPack
             builder.Register(x => SettingFactory.Create<PackSetting>()).As<PackSetting>().InstancePerLifetimeScope();
 
             builder.RegisterType<GitCommandHelper>().As<IGitCommandHelper>().InstancePerLifetimeScope();
-            builder.RegisterType<PathService>().As<IPathService>().InstancePerLifetimeScope();
+            builder.RegisterType<PathService>().As<IPathService>().SingleInstance();
             builder.RegisterType<GitPackEngine>().As<IGitPackEngine>().InstancePerLifetimeScope();
             builder.RegisterType<FileAnalysisFactory>().As<IFileAnalysisFactory>().InstancePerLifetimeScope();
             builder.RegisterType<ProjectFilePreparer>().As<IChangedFilePreparer>().InstancePerLifetimeScope();

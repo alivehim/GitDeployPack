@@ -21,6 +21,7 @@ namespace GitDeployPack.Core
         private IProjectDiffer projectDiff;
         private ISolutionFinder solutionFinder;
         private INugetPackageManager nugetPackageManager;
+        private IPathService pathService;
 
         public Options Options => options;
         public GitFilePackContext PackContext => packContext;
@@ -30,6 +31,7 @@ namespace GitDeployPack.Core
         public IFileAnalysisFactory FileAnalysisFactory => fileAnalysisFactory;
         public IProjectDiffer ProjectDiffer => projectDiff;
         public ISolutionFinder SolutionFinder => solutionFinder;
+        public IPathService PathService => pathService;
         public INugetPackageManager NugetPackageManager => nugetPackageManager;
 
         public ProjectFilePreparer(
@@ -40,8 +42,8 @@ namespace GitDeployPack.Core
             IProjectDiffer projectDiff,
             ISolutionFinder solutionFinder,
             INugetPackageManager nugetPackageManager,
+            IPathService pathService,
             IProjectParserServiceFactory projectParserFactory
-
             )
         {
             this.options = options;
@@ -52,6 +54,7 @@ namespace GitDeployPack.Core
             this.projectParserFactory = projectParserFactory;
             this.nugetPackageManager = nugetPackageManager;
             this.solutionFinder = solutionFinder;
+            this.pathService = pathService;
         }
 
         public IList<ProjectDescription> Analysis(ChangedFileList list)
@@ -65,8 +68,11 @@ namespace GitDeployPack.Core
                 if (!projectFiler.IsValid(item))
                     continue;
 
-                var filePath = $"{Options.GitWorkPath}\\{item.Replace("/","\\")}";
+                var filePath = $"{PathService.GitRootDirectory}\\{item.Replace("/","\\")}";
                 FileInfo file = new FileInfo(filePath);
+
+                if (!file.FullName.StartsWith(options.GitWorkPath))
+                    continue;
 
                 var description=projectParser.Parser(filePath);
 
@@ -93,10 +99,14 @@ namespace GitDeployPack.Core
         {
             try
             {
-                FileInfo file = new FileInfo($"{Options.GitWorkPath}\\{filePath}");
-                var fileAnalysis=FileAnalysisFactory.GetFileAnalysis(file.Extension.Replace(".", "")
-                        .GetEnumName<AnalysisFileType>());
-                fileAnalysis.Do(file.FullName);
+                FileInfo file = new FileInfo($"{PathService.GitRootDirectory}\\{filePath}");
+                if (file.FullName.StartsWith(Options.GitWorkPath) &&  file.Exists)
+                {
+                    var fileAnalysis = FileAnalysisFactory.GetFileAnalysis(file.Extension.Replace(".", "")
+                       .GetEnumName<AnalysisFileType>());
+                    fileAnalysis.Do(file.FullName);
+                }
+               
             }
             catch(Exception ex)
             {

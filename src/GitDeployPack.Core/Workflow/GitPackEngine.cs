@@ -72,6 +72,10 @@ namespace GitDeployPack.Core
                 return new CompositeDisposable();
             }
 
+            //get root work directory
+
+            PathService.GitRootDirectory = GitCommandHelper.GetGitWorkSpace(options.GitWorkPath);
+
 
             var filelist = PrepareChangedFile(options);
             try

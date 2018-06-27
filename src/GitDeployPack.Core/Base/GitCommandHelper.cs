@@ -78,5 +78,17 @@ namespace GitDeployPack.Core
 
             throw new Exception("can't found current branch");
         }
+
+        public string GetGitWorkSpace(string codeDirectory)
+        {
+            var content = DosCommandOutput.Execute($"git worktree list ", codeDirectory);
+            var mc = Regex.Match(content,@"^(?<key>.*?)\s");
+            if(mc.Success)
+            {
+                return mc.Groups["key"].Value;
+            }
+            throw new Exception("Can not found work space");
+        }
+
     }
 }

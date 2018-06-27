@@ -13,14 +13,20 @@ namespace GitDeployPack.Core.ProjectParser
     {
         private PackSetting packSetting;
         private Options options;
+        private IPathService pathService;
         public PackSetting PackSetting => packSetting;
         public Options Options => options;
+        public IPathService PathService => pathService;
 
         private IList<DirectoryInfo> ignorePathlist;
         private IList<string> ignoreProjectlist;
-        public ProjectFilter(PackSetting packSetting,Options options)
+        public ProjectFilter(
+            PackSetting packSetting,
+            IPathService pathService,
+            Options options)
         {
             this.packSetting = packSetting;
+            this.pathService = pathService;
             this.options = options;
             Init();
         }
@@ -49,8 +55,10 @@ namespace GitDeployPack.Core.ProjectParser
             {
                 Directory.SetCurrentDirectory(Options.GitWorkPath);
                 return new DirectoryInfo(Path.GetFullPath(p));
-            });
+            }).Where(p=>p.Exists).ToList();
 
+            if (ignorePathlist.Count == 0)
+                return true;
             var fileInfo =  new FileInfo(fileName);
             if(fileInfo!=null)
             {

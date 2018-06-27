@@ -82,7 +82,7 @@
     <Compile Include="Exception\MsBuildException.cs" />
     <Compile Include="Extensions\EnumConversions..cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Base\FileAnalysisFactory.cs" />
+    <Compile Include="FileAnalysis\FileAnalysisFactory.cs" />
     <Compile Include="FileAnalysis\CompileFileAnalysis.cs" />
     <Compile Include="FileAnalysis\ScriptFileAnalysis.cs" />
     <Compile Include="FileAnalysis\StaticFileAnalysis.cs" />
