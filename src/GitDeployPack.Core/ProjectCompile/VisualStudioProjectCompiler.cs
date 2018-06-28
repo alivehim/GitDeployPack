@@ -33,7 +33,18 @@ namespace GitDeployPack.Core.ProjectCompile
                     {
                         logger.Error(message + "\n" + exception.Message);
                     });
-
+                logger.AppendLog(PackPeriod.Compilie, $"try a again {description.Name}");
+                if (!result.IsSuccess)
+                {
+                    var alterComplier = new MSBuildBuildService();
+                    result=  alterComplier.Build(description,
+                    (message) => { logger.Information(message); },
+                    (message, bo, str) => { logger.Information(message + " - " + bo); },
+                    (message, exception) =>
+                    {
+                        logger.Error(message + "\n" + exception.Message);
+                    });
+                }
                 return result.IsSuccess;
             }
             return true;           

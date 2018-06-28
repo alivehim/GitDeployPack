@@ -85,7 +85,7 @@ namespace GitDeployPack.Core.FileAnalysis
                                     description.Location = item.Directory;
                                     description.IsChanged = false;
                                     description.FullName = item.FullName;
-                                    description.IsNeedCompile = true;
+                                    description.IsNeedCompile = false;
 
                                     //add file to the collection of statics files
                                     if (!filePath.EndsWith(".cshtml"))
