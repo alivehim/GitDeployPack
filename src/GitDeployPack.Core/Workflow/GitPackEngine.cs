@@ -66,11 +66,11 @@ namespace GitDeployPack.Core
         public IDisposable Run()
         {
             Console.WriteLine("start....");
-            //if(GitCommandHelper.GetCurrentBranch(options.GitWorkPath)!=options.NewRepository)
-            //{
-            //    logger.Information($"branch error {options.NewRepository}  ");
-            //    return new CompositeDisposable();
-            //}
+            if (GitCommandHelper.GetCurrentBranch(options.GitWorkPath) != options.NewRepository)
+            {
+                logger.Information($"branch error {options.NewRepository}  ");
+                return new CompositeDisposable();
+            }
 
             //get root work directory
 
