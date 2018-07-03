@@ -12,5 +12,7 @@ namespace GitDeployPack.Model
         public IList<ProjectDescription> ProjectsDescription { get; set; } = new List<ProjectDescription>();
 
         public IList<string> ScriptFiles { get; set; } = new List<string>();
+
+        public IList<string> DeletedFiles { get; set; } = new List<string>();
     }
 }

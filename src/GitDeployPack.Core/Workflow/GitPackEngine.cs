@@ -105,6 +105,7 @@ namespace GitDeployPack.Core
                            () =>
                            {
                                FilePackService.PackScripts();
+                               FilePackService.PackDeletedFiles();
                                Logger.Information("Compile Completed......");
                                if(CompressService.Compress())
                                     Logger.Information("Down .....");

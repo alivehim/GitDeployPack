@@ -263,6 +263,24 @@ namespace GitDeployPack.Core.FilePack
             return false;
         }
 
-
+        public bool PackDeletedFiles()
+        {
+            if(PackContext.DeletedFiles.Any())
+            {
+                var batfile = $"{PathService.TemporaryLocation}\\deletedfiles.bat";
+                using (FileStream fs = new FileStream(batfile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        foreach (var item in PackContext.DeletedFiles)
+                        {
+                            sw.WriteLine($"del \"{item}\" ");
+                        }
+                    }
+                }
+            }
+            
+            return true;
+        }
     }
 }

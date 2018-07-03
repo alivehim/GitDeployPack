@@ -12,5 +12,7 @@ namespace GitDeployPack.Core
         bool Pack(ProjectDescription description);
 
         bool PackScripts();
+
+        bool PackDeletedFiles();
     }
 }

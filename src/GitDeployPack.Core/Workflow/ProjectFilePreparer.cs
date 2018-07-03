@@ -28,7 +28,7 @@ namespace GitDeployPack.Core
         public GitFilePackContext PackContext => packContext;
         public IProjectFilter ProjectFiler => projectFiler;
 
-        public IProjectParserServiceFactory ProjectParserFactory=> projectParserFactory;
+        public IProjectParserServiceFactory ProjectParserFactory => projectParserFactory;
         public IFileAnalysisFactory FileAnalysisFactory => fileAnalysisFactory;
         public IProjectDiffer ProjectDiffer => projectDiff;
         public ISolutionFinder SolutionFinder => solutionFinder;
@@ -37,7 +37,7 @@ namespace GitDeployPack.Core
         public PackSetting PackSetting => packSetting;
 
         public ProjectFilePreparer(
-            Options options, 
+            Options options,
             IFileAnalysisFactory fileAnalysisFactory,
             GitFilePackContext pactContext,
             IProjectFilter projectFiler,
@@ -65,7 +65,7 @@ namespace GitDeployPack.Core
         {
             //分析项目文件
             var projectFile = list.Where(p => p.EndsWith(".csproj"));
-            var projectParser= ProjectParserFactory.Create(AnalysisFileType.CSPROJ);
+            var projectParser = ProjectParserFactory.Create(AnalysisFileType.CSPROJ);
 
             foreach (var item in projectFile)
             {
@@ -78,7 +78,7 @@ namespace GitDeployPack.Core
                 if (!file.FullName.StartsWith(options.GitWorkPath))
                     continue;
 
-                var description=projectParser.Parser(filePath);
+                var description = projectParser.Parser(filePath);
 
                 description.Name = file.Name;
                 description.Location = file.Directory;
@@ -103,19 +103,27 @@ namespace GitDeployPack.Core
         {
             try
             {
-                var realFilePath=$"{PathService.GitRootDirectory}\\{filePath}";
-                if ((realFilePath.StartsWith(Options.GitWorkPath) || realFilePath.StartsWith($"{PathService.GitRootDirectory}\\{PackSetting.ExtentPath}")) &&  File.Exists(realFilePath))
+                var realFilePath = $"{PathService.GitRootDirectory}\\{filePath}";
+                if ((realFilePath.StartsWith(Options.GitWorkPath) || realFilePath.StartsWith($"{PathService.GitRootDirectory}\\{PackSetting.ExtentPath}"))
+                    )
                 {
-                    var fileAnalysis = FileAnalysisFactory.GetFileAnalysis(Path.GetExtension(realFilePath).Replace(".","")
-                       .GetEnumName<AnalysisFileType>());
-                    fileAnalysis.Do(realFilePath);
+                    if (!File.Exists(realFilePath))
+                    {
+                        PackContext.DeletedFiles.Add(filePath);
+                    }
+                    else
+                    {
+                        var fileAnalysis = FileAnalysisFactory.GetFileAnalysis(Path.GetExtension(realFilePath).Replace(".", "")
+                           .GetEnumName<AnalysisFileType>());
+                        fileAnalysis.Do(realFilePath);
+                    }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-        
+
         }
 
 
@@ -124,7 +132,7 @@ namespace GitDeployPack.Core
             var prjlist = solutionFinder.FindSolution(PackContext.ProjectsDescription);
             if (prjlist.Count != 0)
             {
-                foreach(var item in prjlist)
+                foreach (var item in prjlist)
                 {
                     NugetPackageManager.RestoreSolutionPackages(item.FullName);
                 }
