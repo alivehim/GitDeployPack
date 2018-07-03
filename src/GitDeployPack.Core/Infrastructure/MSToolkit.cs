@@ -37,25 +37,9 @@ namespace GitDeployPack.Infrastructure
                 XNamespace fileNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
                 return xDocument.Descendants(fileNamespace + "Compile").Select(n => n.Attribute("Include").Value).ToList();
-
-                //ProjectCollection pro = new ProjectCollection();
-                //pro.DefaultToolsVersion = "14.0";
-                //Dictionary<string, string> globalProperty = new Dictionary<string, string>
-                //{
-                //    {"Configuration", "Release"},
-                //    { "BclBuildImported","Ignore"}
-                //};
-                //var items = pro.LoadProject(projectFilePath, globalProperty,"14.0");
-                //var files=items.AllEvaluatedItems
-                //    .Where(e => e.ItemType == "Compile").Select(p=>p.EvaluatedInclude).ToList();
-
-
-                //var out1 = items.AllEvaluatedProperties.Where(p=>p.Name== "OutputPath");
-                //return files;
             }
             catch (Exception ex)
             {
-                //Console.WriteLine("---- " + projectFilePath);
                 throw ex;
             }
         }
@@ -71,20 +55,20 @@ namespace GitDeployPack.Infrastructure
             {
                 XDocument xDocument = XDocument.Load(projectFilePath);
                 XNamespace fileNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
-
                 return xDocument.Descendants(fileNamespace + "Content").Select(n => n.Attribute("Include").Value).ToList();
-                //ProjectCollection pro = new ProjectCollection();
-                //pro.DefaultToolsVersion = "14.0";
-                //var items = pro.LoadProject(projectFilePath, "14.0");
-                //var files = items.AllEvaluatedItems
-                //    .Where(e => e.ItemType == "Content").Select(p => p.EvaluatedInclude).ToList();
-                //return files;
             }
             catch (Exception ex)
             {
-                //Console.WriteLine("---- " + projectFilePath);
                 throw ex;
             }
+        }
+
+        public static IList<string> GetReferAssembly(string projectFilePath)
+        {
+            XDocument xDocument = XDocument.Load(projectFilePath);
+            XNamespace fileNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
+            return xDocument.Descendants(fileNamespace + "ProjectReference")
+                .Select(n => n.Descendants(fileNamespace + "Project").Select(p => p.Value).FirstOrDefault()).ToList();
         }
     }
 }

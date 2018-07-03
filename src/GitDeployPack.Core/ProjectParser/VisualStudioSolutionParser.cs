@@ -40,7 +40,7 @@ namespace GitDeployPack.Core.ProjectParser
                 };
 
                 string projectFile = Path.Combine(folder, visualStudioProject.ProjectFile);
-
+                visualStudioProject.ProjectFile = projectFile;
                 result.Add(visualStudioProject);
 
                 match = match.NextMatch();

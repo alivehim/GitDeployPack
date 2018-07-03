@@ -44,6 +44,23 @@ namespace GitDeployPack.Core.ProjectParser
                     match = match.NextMatch();
                 }
             }
+            else
+            {
+                if(!description.OutputType.IsNotEmpty() && description.ProjectType==VsProjectType.Undefined)
+                {
+                    switch(description.OutputType)
+                    {
+                        case "Exe":
+                            description.ProjectType = VsProjectType.Console;
+                            break;
+                        case "Library":
+                            description.ProjectType = VsProjectType.ClassLibrary;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
           
             return description;
         }

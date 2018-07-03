@@ -110,25 +110,31 @@ namespace GitDeployPack.Core.FilePack
             if (description.IsNeedCompile)
             {
                 logger.AppendLog(PackPeriod.Pack, $"{description.AssemblyName}");
-                if (description.RelevanceProject != null)
+                if (description.RelevanceProjects != null && description.RelevanceProjects.Any())
                 {
-                    Directory.SetCurrentDirectory(description.RelevanceProject.Location.FullName);
-                    var assemblySourceFile = Path.Combine(Path.GetFullPath(description.RelevanceProject.OutputPath), description.OutputName);
-                    //reflative of path
-                    var relativePath = assemblySourceFile.Replace(options.GitWorkPath, "");
-                    //create sub folds
-
-                    if (relativePath[0] == '\\')
+                    foreach(var itemproject in description.RelevanceProjects)
                     {
-                        relativePath = relativePath.Remove(0, 1);
-                    }
+                        Directory.SetCurrentDirectory(description.Location.FullName);
+                        var physicalassemblyPath = Path.Combine(Path.GetFullPath(description.OutputPath), description.OutputName);
+                        Directory.SetCurrentDirectory(itemproject.Location.FullName);
+                        var assemblySourceFile = Path.Combine(Path.GetFullPath(itemproject.OutputPath), description.OutputName);
+                        //reflative of path
+                        var relativePath = assemblySourceFile.Replace(options.GitWorkPath, "");
+                        //create sub folds
 
-                    if (EnsureParentDirectory(root, relativePath))
-                    {
-                        var copyFilePath = Path.Combine(root.FullName, relativePath);
-                        if (!File.Exists(copyFilePath) && File.Exists(assemblySourceFile))
-                            File.Copy(assemblySourceFile, copyFilePath);
+                        if (relativePath[0] == '\\')
+                        {
+                            relativePath = relativePath.Remove(0, 1);
+                        }
+
+                        if (EnsureParentDirectory(root, relativePath))
+                        {
+                            var copyFilePath = Path.Combine(root.FullName, relativePath);
+                            if (!File.Exists(copyFilePath) && File.Exists(physicalassemblyPath))
+                                File.Copy(physicalassemblyPath, copyFilePath);
+                        }
                     }
+                       
                 }
                 else
                 {
@@ -158,27 +164,31 @@ namespace GitDeployPack.Core.FilePack
         {
             foreach (var item in description.ReferenceAssembly)
             {
-                if (description.RelevanceProject != null)
+                if (description.RelevanceProjects != null && description.RelevanceProjects.Any())
                 {
-                    Directory.SetCurrentDirectory(description.Location.FullName);
-                    var assemblySourceFile = Path.GetFullPath(item);
-                    //reflative of path
-                    Directory.SetCurrentDirectory(description.RelevanceProject.Location.FullName);
-                    var targetSourceFile = Path.Combine(Path.GetFullPath(description.RelevanceProject.OutputPath), Path.GetFileName(assemblySourceFile));
-                    var relativePath = targetSourceFile.Replace(options.GitWorkPath, "");
-                    //create sub folds
-
-                    if (relativePath[0] == '\\')
+                    foreach(var itemproject in description.RelevanceProjects)
                     {
-                        relativePath = relativePath.Remove(0, 1);
-                    }
+                        Directory.SetCurrentDirectory(description.Location.FullName);
+                        var assemblySourceFile = Path.GetFullPath(item);
+                        //reflative of path
+                        Directory.SetCurrentDirectory(itemproject.Location.FullName);
+                        var targetSourceFile = Path.Combine(Path.GetFullPath(itemproject.OutputPath), Path.GetFileName(assemblySourceFile));
+                        var relativePath = targetSourceFile.Replace(options.GitWorkPath, "");
+                        //create sub folds
 
-                    if (EnsureParentDirectory(root, relativePath))
-                    {
-                        var copyFilePath = Path.Combine(root.FullName, relativePath);
-                        if (!File.Exists(copyFilePath) && File.Exists(assemblySourceFile))
-                            File.Copy(assemblySourceFile, copyFilePath);
+                        if (relativePath[0] == '\\')
+                        {
+                            relativePath = relativePath.Remove(0, 1);
+                        }
+
+                        if (EnsureParentDirectory(root, relativePath))
+                        {
+                            var copyFilePath = Path.Combine(root.FullName, relativePath);
+                            if (!File.Exists(copyFilePath) && File.Exists(assemblySourceFile))
+                                File.Copy(assemblySourceFile, copyFilePath);
+                        }
                     }
+                    
                 }
                 else
                 {

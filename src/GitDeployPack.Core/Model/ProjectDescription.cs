@@ -83,7 +83,7 @@ namespace GitDeployPack.Model
         public IList<string> ReferenceAssembly { get; set; } = new List<string>();
 
 
-        public ProjectDescription RelevanceProject { get; set; }
+        public IList<ProjectDescription> RelevanceProjects { get; set; } = new List<ProjectDescription>();
 
         /// <summary>
         /// the collection of static files
