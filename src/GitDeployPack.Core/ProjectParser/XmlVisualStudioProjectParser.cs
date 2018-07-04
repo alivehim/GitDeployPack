@@ -47,7 +47,7 @@ namespace GitDeployPack.Core.ProjectParser
             }
             else
             {
-                if(!description.OutputType.IsNotEmpty() && description.ProjectType==VsProjectType.Undefined)
+                if(description.OutputType.IsNotEmpty() && description.ProjectType==VsProjectType.Undefined)
                 {
                     switch(description.OutputType)
                     {

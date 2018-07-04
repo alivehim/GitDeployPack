@@ -50,8 +50,8 @@ namespace GitDeployPack.Core.ProjectParser
 
             }
 
-            var dllList = list.Where(p => p.ProjectType==VsProjectType.ClassLibrary
-            || p.ProjectType==VsProjectType.Undefined).ToList();
+            var dllList = list.Where(p => (p.ProjectType==VsProjectType.ClassLibrary
+            || p.ProjectType==VsProjectType.Undefined)&& p.RelevanceProjects.Count==0).ToList();
 
             if (dllList.Count != 0)
             {
