@@ -37,5 +37,7 @@ namespace GitDeployPack.Model
         JPG,
         [Description("gif")]
         GIF,
+        [Description("svg")]
+        SVG,
     }
 }
