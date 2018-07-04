@@ -30,7 +30,12 @@ namespace GitDeployPack.Model
         [Description("config")]
         CONFIG,
         [Description("sql")]
-        SQL
-       
+        SQL,
+        [Description("png")]
+        PNG,
+        [Description("jpg")]
+        JPG,
+        [Description("gif")]
+        GIF,
     }
 }

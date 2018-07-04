@@ -28,12 +28,18 @@ namespace GitDeployPack.Core
                     fileAnalysis = new CompileFileAnalysis( ContainerManager.Resolve<IProjectFilter>(), PackContext);
                     break;
                 case AnalysisFileType.CSHTML:
+                    fileAnalysis = new StaticFileAnalysis(ContainerManager.Resolve<IProjectFilter>(), PackContext);
+                    break;
                 case AnalysisFileType.CSS:
                 case AnalysisFileType.HTML:
                 case AnalysisFileType.JS:
                 case AnalysisFileType.JSON:
                 case AnalysisFileType.XML:
-                    fileAnalysis = new StaticFileAnalysis(ContainerManager.Resolve<IProjectFilter>(), PackContext);
+                case AnalysisFileType.GIF:
+                case AnalysisFileType.PNG:
+                case AnalysisFileType.JPG:
+                    //fileAnalysis = new StaticFileAnalysis(ContainerManager.Resolve<IProjectFilter>(), PackContext);
+                    fileAnalysis = new ScriptFileAnalysis(PackContext);
                     break;
                 case AnalysisFileType.SQL:
                     fileAnalysis = new ScriptFileAnalysis(PackContext);

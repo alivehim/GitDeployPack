@@ -55,7 +55,8 @@ namespace GitDeployPack.Infrastructure
             {
                 XDocument xDocument = XDocument.Load(projectFilePath);
                 XNamespace fileNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
-                return xDocument.Descendants(fileNamespace + "Content").Select(n => n.Attribute("Include").Value).ToList();
+                return xDocument.Descendants(fileNamespace + "Content").Select(n => n.Attribute("Include").Value).
+                Union(xDocument.Descendants(fileNamespace + "None").Select(n => n.Attribute("Include").Value)).ToList();
             }
             catch (Exception ex)
             {

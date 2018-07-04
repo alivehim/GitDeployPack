@@ -19,7 +19,8 @@ namespace GitDeployPack.Core.ProjectParser
             XDocument xDocument = XDocument.Load(projectFile);
             XNamespace fileNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
-            description.ContentFiles = xDocument.Descendants(fileNamespace + "Content").Select(n => n.Attribute("Include").Value).ToList();
+            description.ContentFiles = xDocument.Descendants(fileNamespace + "Content").Select(n => n.Attribute("Include").Value).
+                Union(xDocument.Descendants(fileNamespace + "None").Select(n => n.Attribute("Include").Value)).ToList();
             description.CompileFiles = xDocument.Descendants(fileNamespace + "Compile").Select(n => n.Attribute("Include").Value).ToList();
             description.ReferenceProjects = xDocument.Descendants(fileNamespace + "ProjectReference")
                 .Select(  n => n.Descendants(fileNamespace + "Project").Select(p => p.Value).FirstOrDefault()).ToList();
