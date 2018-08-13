@@ -43,8 +43,9 @@ namespace GitDeployPack.Core.ProjectParser
                         {
                             inn.RelevanceProjects.Add(item);
                         }
-                        result = true;
+                        
                     }
+                    result = true;
                 }
 
 
